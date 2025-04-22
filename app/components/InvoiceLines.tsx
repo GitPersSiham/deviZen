@@ -50,9 +50,9 @@ const InvoiceLines: React.FC<Props> = ({ invoice, setInvoice }) => {
     return (
         <div className='h-fit bg-base-200 p-5 rounded-xl w-full'>
             <div className='flex justify-between items-center mb-4'>
-                <h2 className='badge badge-primary'>Produits / Services</h2>
+                <h2 className='badge badge-accent'>Produits / Services</h2>
                 <button
-                    className='btn btn-sm btn-primary'
+                    className='btn btn-sm btn-accent'
                     onClick={handleAddLine}
                 >
                     <Plus className='w-4' />
@@ -107,7 +107,7 @@ const InvoiceLines: React.FC<Props> = ({ invoice, setInvoice }) => {
                                 <td>
                                     <button
                                         onClick={() => handleRemoveLine(index) }
-                                        className='btn btn-sm btn-circle btn-primary'>
+                                        className='btn btn-sm btn-circle btn-accent'>
                                         <Trash className="w-4" />
                                     </button>
                                 </td>

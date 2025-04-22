@@ -1,109 +1,84 @@
-import { Invoice } from '@/type';
-import React from 'react';
-import VATControl from './VATControl';
+import { Invoice } from '@/type'
+import React from 'react'
 
 interface Props {
-  invoice: Invoice | null;
-  setInvoice: (invoice: Invoice) => void;
+    invoice: Invoice 
+    setInvoice: (invoice: Invoice) => void
 }
 
-const defaultInvoice: Invoice = {
-  id: '',
-  name: '',
-  issuerName: '',
-  issuerAddress: '',
-  clientName: '',
-  clientAddress: '',
-  invoiceDate: '',
-  dueDate: '',
-  vatActive: false,
-  vatRate: 20,
-  status: 1,
-  lines: [],
-  userId: ''
-};
+const InvoiceInfo: React.FC<Props> = ({ invoice, setInvoice }) => {
 
-const InvoiceInfo: React.FC<Props> = ({
-  invoice = defaultInvoice,
-  setInvoice
-}) => {
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    if (invoice) {
-      setInvoice({...invoice, [name]: value});
-    }
-  };
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, field: string) => {
+        setInvoice({ ...invoice, [field]: e.target.value });
+    };
 
-  if (!invoice) {
-    return null;
-  }
+    console.log(invoice)
 
-  console.log('Invoice details:', JSON.stringify(invoice, null, 2));
+    return (
+        <div className='flex flex-col h-fit bg-base-200 p-5 rounded-xl mb-4 md:mb-0'>
+            <div className='space-y-4'>
+                <h2 className='badge badge-accent'>Émetteur</h2>
+                <input
+                    type="text"
+                    value={invoice?.issuerName}
+                    placeholder="Nom de l'entreprise émettrice"
+                    className='input input-bordered w-full resize-none'
+                    required
+                    onChange={(e) => handleInputChange(e , 'issuerName')}
+                />
 
-  return (
-    <div className="flex flex-col h-fit bg-base-200 p-5 rounded-xl mb-4 md:mb-0
-    ">
-      <div className="space-y-4">
-        <h2 className='badge badge-primary'>Emétteur</h2>
-        <input 
-          className='input input-bordered w-full resize-none' 
-          type="text" 
-          name="issuerName"
-          value={invoice.issuerName} 
-          onChange={handleInputChange}
-          placeholder="Nom de l&apos;entreprise émitrice"
-          required
-        />  
-        <textarea 
-          className='textarea textarea-bordered w-full resize-none h-40'
-          name="issuerAddress"
-          value={invoice.issuerAddress}
-          placeholder="Adresse de l&apos;entreprise émitrice"
-          onChange={handleInputChange}
-          aria-rowcount={5}
-          required
-        ></textarea>
-        <h2 className='badge badge-primary'>Client</h2>
-        <input 
-          className='input input-bordered w-full resize-none' 
-          type="text" 
-          name="clientName"
-          value={invoice.clientName} 
-          onChange={handleInputChange}
-          placeholder="Nom de l'entreprise cliente"
-          required
-        />  
-        <textarea 
-          className='textarea textarea-bordered w-full resize-none h-40'
-          name="clientAddress"
-          value={invoice.clientAddress}
-          placeholder="Adresse de l'entreprise cliente"
-          onChange={handleInputChange}
-          aria-rowcount={5}
-          required
-        ></textarea>
-        <h2 className='badge badge-primary'>Date de la facture</h2>
-        <input 
-          className='input input-bordered w-full resize-none' 
-          type="date" 
-          name="invoiceDate"
-          value={invoice.invoiceDate} 
-          onChange={handleInputChange}
-          required
-        />  
-        <h2 className='badge badge-primary'>Date d'échéance</h2>
-        <input 
-          className='input input-bordered w-full resize-none' 
-          type="date" 
-          name="dueDate"
-          value={invoice.dueDate} 
-          onChange={handleInputChange}
-          required
-        /> 
+                <textarea
+                    value={invoice?.issuerAddress}
+                    placeholder="Adresse de l'entreprise émettrice"
+                    className='textarea textarea-bordered w-full resize-none h-40'
+                    aria-rowcount={5}
+                    required
+                    onChange={(e) => handleInputChange(e , 'issuerAddress')}
+                >
+                </textarea>
 
-      </div>
-    </div>
-  );
+                <h2 className='badge badge-accent'>Client</h2>
+                <input
+                    type="text"
+                    value={invoice?.clientName}
+                    placeholder="Nom de l'entreprise cliente"
+                    className='input input-bordered w-full resize-none'
+                    required
+                    onChange={(e) => handleInputChange(e , 'clientName')}
+                    
+                />
+
+                <textarea
+                    value={invoice?.clientAddress}
+                    placeholder="Adresse de l'entreprise cliente"
+                    className='textarea textarea-bordered w-full resize-none h-40'
+                    aria-rowcount={5}
+                    required
+                    onChange={(e) => handleInputChange(e , 'clientAddress')}
+                >
+                </textarea>
+
+                <h2 className='badge badge-accent'>Date de la Facture</h2>
+                <input
+                    type="date"
+                    value={invoice?.invoiceDate}
+                    className='input input-bordered w-full resize-none'
+                    required
+                    onChange={(e) => handleInputChange(e , 'invoiceDate')}
+                />
+
+                <h2 className='badge badge-accent'>Date d'échéance</h2>
+                <input
+                    type="date"
+                    value={invoice?.dueDate}
+                    className='input input-bordered w-full resize-none'
+                    required
+                    onChange={(e) => handleInputChange(e , 'dueDate')}
+                />
+
+            </div>
+        </div>
+    )
 }
 
-export default InvoiceInfo;
+export default InvoiceInfo

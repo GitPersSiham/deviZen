@@ -5,6 +5,7 @@ import React from 'react'
 
 type InvoiceComponentProps = {
     invoice: Invoice;
+    index: number
 }
 
 const getStatusBadge = (status: number) => {
@@ -56,7 +57,7 @@ const getStatusBadge = (status: number) => {
 }
 
 
-const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice }) => {
+const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice, index }) => {
 
 
     const calculateTotal = () => {
@@ -74,28 +75,29 @@ const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice }) => {
 
 
     return (
-        <div className='bg-base-200 p-5 rounded-xl space-y-2 shadow-md hover:shadow-lg transition-shadow duration-300 border border-base-300'>
+        <div className='bg-base-200/90 p-5 rounded-xl space-y-2 shadow'>
             <div className='flex justify-between items-center w-full'>
                 <div>{getStatusBadge(invoice.status)}</div>
                 <Link
-                    className='btn btn-primary btn-sm'
+                    className='btn btn-accent btn-sm'
                     href={`/invoice/${invoice.id}`}>
                     Plus
                     <ArrowUpRightSquare className='w-4' />
+
                 </Link>
             </div>
 
             <div className='w-full'>
                 <div >
                     <div className='stat-title'>
-                        <div className='uppercase text-sm text-primary font-semibold'>DEVZ-{invoice.id}</div>
+                        <div className='uppercase text-sm'>FACT-{invoice.id}</div>
                     </div>
                     <div>
-                        <div className='stat-value text-base-content'>
-                            {calculateTotal().toFixed(2)} €
+                        <div className='stat-value'>
+                            {calculateTotal().toFixed(2) } €
                         </div>
                     </div>
-                    <div className='stat-desc text-base-content/70'>
+                    <div className='stat-desc'>
                        {invoice.name}
                     </div>
                 </div>
