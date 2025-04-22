@@ -32,7 +32,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchInvoices()
-  }, [email])
+  }, [email, fetchInvoices])
 
   useEffect(() => {
     setIsNameValid(invoiceName.length <= 60)

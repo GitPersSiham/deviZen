@@ -9,7 +9,7 @@ import Wrapper from '@/app/components/Wrapper'
 import { Invoice, Totals } from '@/type'
 import { Save, Trash } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback,useEffect, useState } from 'react'
 
 const Page = ({ params }: { params: Promise<{ invoiceId: string }> }) => {
 
@@ -34,18 +34,17 @@ const Page = ({ params }: { params: Promise<{ invoiceId: string }> }) => {
   }
 
   useEffect(() => {
-    fetchInvoice()
-  }, [params])
+    fetchInvoice();
+  }, [fetchInvoice]);
 
   useEffect(() => {
     if (!invoice) return;
     const ht = invoice.lines.reduce((acc, { quantity, unitPrice }) =>
       acc + quantity * unitPrice, 0
-    )
-    const vat = invoice.vatActive ? ht * (invoice.vatRate / 100) : 0
-    setTotals({ totalHT: ht, totalVAT: vat, totalTTC: ht + vat })
-
-  }, [invoice])
+    );
+    const vat = invoice.vatActive ? ht * (invoice.vatRate / 100) : 0;
+    setTotals({ totalHT: ht, totalVAT: vat, totalTTC: ht + vat });
+  }, [invoice]); // La dépendance à invoice est déjà bien gérée ici
 
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newStatus = parseInt(e.target.value)
