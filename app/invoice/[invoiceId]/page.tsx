@@ -20,7 +20,7 @@ const Page = ({ params }: { params: Promise<{ invoiceId: string }> }) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const fetchInvoice = async () => {
+  const fetchInvoice = useCallback(async () => {
     try {
       const { invoiceId } = await params
       const fetchedInvoice = await getInvoiceById(invoiceId)
@@ -31,7 +31,7 @@ const Page = ({ params }: { params: Promise<{ invoiceId: string }> }) => {
     } catch (error) {
       console.error(error)
     }
-  }
+  }, [params])
 
   useEffect(() => {
     fetchInvoice();
