@@ -240,3 +240,4 @@ export async function deleteInvoice(invoiceId: string) {
         console.error(error)
     }
 }
+}
