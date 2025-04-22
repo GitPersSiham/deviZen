@@ -35,8 +35,7 @@ const Page = ({ params }: { params: Promise<{ invoiceId: string }> }) => {
 
   useEffect(() => {
     fetchInvoice()
-  }, [])
-
+  }, [params])
 
   useEffect(() => {
     if (!invoice) return;

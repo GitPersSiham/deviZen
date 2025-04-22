@@ -21,7 +21,7 @@ const InvoiceInfo: React.FC<Props> = ({ invoice, setInvoice }) => {
                 <input
                     type="text"
                     value={invoice?.issuerName}
-                    placeholder="Nom de l'entreprise émettrice"
+                    placeholder="Nom de l&apos;entreprise émettrice"
                     className='input input-bordered w-full resize-none'
                     required
                     onChange={(e) => handleInputChange(e , 'issuerName')}
@@ -29,9 +29,8 @@ const InvoiceInfo: React.FC<Props> = ({ invoice, setInvoice }) => {
 
                 <textarea
                     value={invoice?.issuerAddress}
-                    placeholder="Adresse de l'entreprise émettrice"
+                    placeholder="Adresse de l&apos;entreprise émettrice"
                     className='textarea textarea-bordered w-full resize-none h-40'
-                    aria-rowcount={5}
                     required
                     onChange={(e) => handleInputChange(e , 'issuerAddress')}
                 >
@@ -41,7 +40,7 @@ const InvoiceInfo: React.FC<Props> = ({ invoice, setInvoice }) => {
                 <input
                     type="text"
                     value={invoice?.clientName}
-                    placeholder="Nom de l'entreprise cliente"
+                    placeholder="Nom de l&apos;entreprise cliente"
                     className='input input-bordered w-full resize-none'
                     required
                     onChange={(e) => handleInputChange(e , 'clientName')}
@@ -50,9 +49,8 @@ const InvoiceInfo: React.FC<Props> = ({ invoice, setInvoice }) => {
 
                 <textarea
                     value={invoice?.clientAddress}
-                    placeholder="Adresse de l'entreprise cliente"
+                    placeholder="Adresse de l&apos;entreprise cliente"
                     className='textarea textarea-bordered w-full resize-none h-40'
-                    aria-rowcount={5}
                     required
                     onChange={(e) => handleInputChange(e , 'clientAddress')}
                 >

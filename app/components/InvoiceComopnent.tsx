@@ -5,7 +5,6 @@ import React from 'react'
 
 type InvoiceComponentProps = {
     invoice: Invoice;
-    index: number
 }
 
 const getStatusBadge = (status: number) => {
@@ -57,7 +56,7 @@ const getStatusBadge = (status: number) => {
 }
 
 
-const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice, index }) => {
+const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice }) => {
 
 
     const calculateTotal = () => {
@@ -93,7 +92,7 @@ const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice, index }) =
                     </div>
                     <div>
                         <div className='stat-value'>
-                            {calculateTotal().toFixed(2) } €
+                            {calculateTotal().toFixed(2)} €
                         </div>
                     </div>
                     <div className='stat-desc'>

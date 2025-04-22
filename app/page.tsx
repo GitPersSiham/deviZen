@@ -1,5 +1,5 @@
 "use client"
-import Image from "next/image";
+
 import Wrapper from "./components/Wrapper";
 import { Layers } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -80,7 +80,7 @@ export default function Home() {
           {invoices.length > 0 && (
             invoices.map((invoice, index) => (
               <div key={index}>
-                <InvoiceComponent invoice={invoice} index={index} />
+                <InvoiceComponent invoice={invoice}  />
               </div>
             ))
           )}
