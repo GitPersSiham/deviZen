@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.29.7",
+    "@clerk/nextjs": "^6.17.0",
     "@prisma/client": "^5.10.2",
     "canvas-confetti": "^1.9.3",
     "clsx": "^2.1.0",
