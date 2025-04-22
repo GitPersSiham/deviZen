@@ -86,7 +86,7 @@ export default function Home() {
           ) : (
             invoices.map((invoice, index) => (
               <div key={index}>
-                <InvoiceComponent invoice={invoice} index={index} />
+                <InvoiceComponent invoice={invoice} />
               </div>
             ))
           )}
