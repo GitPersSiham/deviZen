@@ -1,9 +1,8 @@
 "use server"
 
-
+import prisma from "@/lib/prisma";
 import { Invoice } from "@/type";
 import { randomBytes } from "crypto";
-import prisma from "./lib/prisma";
 
 export async function checkAndAddUser(email: string, name: string) {
     if (!email) return;
@@ -22,9 +21,10 @@ export async function checkAndAddUser(email: string, name: string) {
                 }
             })
         }
-
     } catch (error) {
-        console.error(error)
+        if (error instanceof Error) {
+            console.error("Erreur dans checkAndAddUser:", error.message);
+        }
     }
 }
 
@@ -52,16 +52,16 @@ export async function createEmptyInvoice(email: string, name: string) {
             where: {
                 email: email
             }
-        })
+        });
 
-        const invoiceId = await generateUniqueId() as string
+        const invoiceId = await generateUniqueId() as string;
 
         if (user) {
             return await prisma.invoice.create({
                 data: {
                     id: invoiceId,
                     name: name,
-                    userId: user?.id,
+                    userId: user.id,
                     issuerName: "",
                     issuerAddress: "",
                     clientName: "",
@@ -77,22 +77,19 @@ export async function createEmptyInvoice(email: string, name: string) {
                 include: {
                     lines: true
                 }
-            })
+            });
         }
     } catch (error) {
-        console.error("Erreur lors de la création de la facture:", error)
-        throw error
+        if (error instanceof Error) {
+            console.error("Erreur dans createEmptyInvoice:", error.message);
+        }
+        throw error;
     }
 }
 
 export async function getInvoicesByEmail(email: string) {
-    if (!email) {
-        console.log("Email manquant dans getInvoicesByEmail");
-        return [];
-    }
-    
+    if (!email) return [];
     try {
-        console.log("Recherche de l'utilisateur avec l'email:", email);
         const user = await prisma.user.findUnique({
             where: { email },
             include: {
@@ -103,20 +100,32 @@ export async function getInvoicesByEmail(email: string) {
                 }
             }
         });
-        
-        console.log("Utilisateur trouvé:", user);
-        
+
         if (!user) {
-            console.log("Aucun utilisateur trouvé");
             return [];
         }
-        
-        const invoices = user.invoices;
-        console.log("Factures trouvées:", invoices);
-        return invoices;
+
+        const today = new Date();
+        const updatedInvoices = await Promise.all(
+            user.invoices.map(async (invoice) => {
+                const dueDate = new Date(invoice.dueDate);
+                if (dueDate < today && invoice.status === 2) {
+                    return await prisma.invoice.update({
+                        where: { id: invoice.id },
+                        data: { status: 5 },
+                        include: { lines: true }
+                    });
+                }
+                return invoice;
+            })
+        );
+
+        return updatedInvoices;
     } catch (error) {
-        console.error("Erreur lors de la récupération des factures:", error);
-        throw error;
+        if (error instanceof Error) {
+            console.error("Erreur dans getInvoicesByEmail:", error.message);
+        }
+        return [];
     }
 }
 

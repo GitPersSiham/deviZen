@@ -79,11 +79,10 @@ const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice, index }) =
             <div className='flex justify-between items-center w-full'>
                 <div>{getStatusBadge(invoice.status)}</div>
                 <Link
-                    className='btn btn-accent btn-sm'
+                    className='btn btn-primary btn-sm'
                     href={`/invoice/${invoice.id}`}>
                     Plus
                     <ArrowUpRightSquare className='w-4' />
-
                 </Link>
             </div>
 

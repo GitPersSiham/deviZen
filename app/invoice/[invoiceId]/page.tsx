@@ -141,7 +141,7 @@ const Page = ({ params }: { params: Promise<{ invoiceId: string }> }) => {
               <option value={5}>Impayée</option>
             </select>
 
-            <button className='btn btn-sm btn-primary ml-4'
+            <button className='btn btn-primary btn-sm ml-4'
               disabled={isSaveDisabled || isLoading}
               onClick={handleSave}
             >
@@ -153,12 +153,11 @@ const Page = ({ params }: { params: Promise<{ invoiceId: string }> }) => {
                   <Save className="w-4 ml-2" />
                 </>
               )}
-
             </button>
 
             <button
               onClick={handleDelete}
-              className='btn btn-sm btn-primary ml-4'>
+              className='btn btn-primary btn-sm ml-4'>
               <Trash className='w-4' />
             </button>
 

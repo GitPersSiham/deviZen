@@ -1,7 +1,7 @@
 "use client"
+import Image from "next/image";
 import Wrapper from "./components/Wrapper";
-import { Plus } from "lucide-react";
-import { Layers, FileText } from "lucide-react";
+import { Layers } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createEmptyInvoice, getInvoicesByEmail } from "./actions";
 import { useUser } from "@clerk/nextjs";
@@ -9,39 +9,29 @@ import confetti from "canvas-confetti"
 import { Invoice } from "@/type";
 import InvoiceComponent from "./components/InvoiceComopnent";
 
+
+
+
 export default function Home() {
   const { user } = useUser()
   const [invoiceName, setInvoiceName] = useState("")
   const [isNameValid, setIsNameValid] = useState(true)
-  const email = user?.primaryEmailAddress?.emailAddress
+  const email = user?.primaryEmailAddress?.emailAddress as string
   const [invoices, setInvoices] = useState<Invoice[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   const fetchInvoices = async () => {
     try {
-      setIsLoading(true);
-      console.log("Tentative de récupération des factures pour l'email:", email);
-      if (!email) {
-        console.log("Email non disponible");
-        return;
-      }
       const data = await getInvoicesByEmail(email)
-      console.log("Données reçues:", data);
       if (data) {
         setInvoices(data)
       }
     } catch (error) {
       console.error("Erreur lors du chargement des factures", error);
-    } finally {
-      setIsLoading(false);
     }
   }
 
   useEffect(() => {
-    console.log("Email actuel:", email);
-    if (email) {
-      fetchInvoices();
-    }
+    fetchInvoices()
   }, [email])
 
   useEffect(() => {
@@ -51,22 +41,21 @@ export default function Home() {
   const handleCreateInvoice = async () => {
     try {
       if (email) {
-        const newInvoice = await createEmptyInvoice(email, invoiceName)
-        if (newInvoice) {
-          setInvoices(prev => [...prev, newInvoice])
-          setInvoiceName("")
-          const modal = document.getElementById('my_modal_3') as HTMLDialogElement
-          if (modal) {
-            modal.close()
-          }
-          confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 },
-            zIndex: 9999
-          })
-        }
+        await createEmptyInvoice(email, invoiceName)
       }
+      fetchInvoices()
+      setInvoiceName("")
+      const modal = document.getElementById('my_modal_3') as HTMLDialogElement
+      if (modal) {
+        modal.close()
+      }
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        zIndex: 9999
+      })
+
     } catch (error) {
       console.error("Erreur lors de la création de la facture :", error);
     }
@@ -74,27 +63,21 @@ export default function Home() {
 
   return (
     <Wrapper>
-      <div className="flex flex-col space-y-8">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-base-content">Mes Factures</h1>
-            <p className="text-base-content/70 mt-2">Gérez et créez vos factures en toute simplicité</p>
-          </div>
-          <button 
-            className="btn btn-primary btn-sm"
-            onClick={() => (document.getElementById('my_modal_3') as HTMLDialogElement).showModal()}
-          >
-            <Plus className="w-4 mr-2" />
-            Nouvelle Facture
-          </button>
-        </div>
+      <div className="flex flex-col space-y-4">
+        <h1 className="text-lg font-bold">Mes factures</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {isLoading ? (
-            <div className="col-span-full flex justify-center items-center p-12">
-              <span className="loading loading-spinner loading-lg text-primary"></span>
+        <div className=" grid md:grid-cols-3 gap-4">
+          <div className="cursor-pointer border border-primary rounded-xl flex flex-col justify-center items-center p-5"
+            onClick={() => (document.getElementById('my_modal_3') as HTMLDialogElement).showModal()}>
+            <div className="font-bold text-primary">
+              Créer une facture
             </div>
-          ) : (
+            <div className='bg-primary/10 text-primary rounded-full p-2 mt-2'>
+              <Layers className='h-6 w-6' />
+            </div>
+          </div>
+
+          {invoices.length > 0 && (
             invoices.map((invoice, index) => (
               <div key={index}>
                 <InvoiceComponent invoice={invoice} index={index} />
@@ -103,41 +86,36 @@ export default function Home() {
           )}
         </div>
 
+
         <dialog id="my_modal_3" className="modal">
           <div className="modal-box">
             <form method="dialog">
               <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
             </form>
-            <h3 className="font-bold text-lg mb-4">Nouvelle Facture</h3>
-            <div className="form-control w-full">
-              <label className="label">
-                <span className="label-text text-base-content">Nom de la facture</span>
-                <span className="label-text-alt text-base-content/70">{invoiceName.length}/60</span>
-              </label>
-              <input
-                type="text"
-                placeholder="Entrez le nom de votre facture"
-                className="input input-bordered w-full"
-                value={invoiceName}
-                onChange={(e) => setInvoiceName(e.target.value)}
-              />
-              {!isNameValid && (
-                <label className="label">
-                  <span className="label-text-alt text-error">Le nom ne peut pas dépasser 60 caractères</span>
-                </label>
-              )}
-            </div>
-            <div className="modal-action">
-              <button
-                className="btn btn-primary"
-                disabled={!isNameValid || invoiceName.length === 0}
-                onClick={handleCreateInvoice}
-              >
-                Créer
-              </button>
-            </div>
+
+            <h3 className="font-bold text-lg">Nouvelle Facture</h3>
+
+            <input
+              type="text"
+              placeholder="Nom de la facture (max 60 caractères)"
+              className="input input-bordered w-full my-4"
+              value={invoiceName}
+              onChange={(e) => setInvoiceName(e.target.value)}
+            />
+
+            {!isNameValid && <p className="mb-4 text-sm">Le nom ne peut pas dépasser 60 caractères.</p>}
+
+            <button
+              className="btn btn-primary"
+              disabled={!isNameValid || invoiceName.length === 0}
+              onClick={handleCreateInvoice}
+            >
+              Créer
+            </button>
+
           </div>
         </dialog>
+
       </div>
     </Wrapper>
   );

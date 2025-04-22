@@ -17,7 +17,7 @@ const InvoiceInfo: React.FC<Props> = ({ invoice, setInvoice }) => {
     return (
         <div className='flex flex-col h-fit bg-base-200 p-5 rounded-xl mb-4 md:mb-0'>
             <div className='space-y-4'>
-                <h2 className='badge badge-accent'>Émetteur</h2>
+                <h2 className='badge badge-primary'>Émetteur</h2>
                 <input
                     type="text"
                     value={invoice?.issuerName}
@@ -37,7 +37,7 @@ const InvoiceInfo: React.FC<Props> = ({ invoice, setInvoice }) => {
                 >
                 </textarea>
 
-                <h2 className='badge badge-accent'>Client</h2>
+                <h2 className='badge badge-primary'>Client</h2>
                 <input
                     type="text"
                     value={invoice?.clientName}
@@ -58,7 +58,7 @@ const InvoiceInfo: React.FC<Props> = ({ invoice, setInvoice }) => {
                 >
                 </textarea>
 
-                <h2 className='badge badge-accent'>Date de la Facture</h2>
+                <h2 className='badge badge-primary'>Date de la Facture</h2>
                 <input
                     type="date"
                     value={invoice?.invoiceDate}
@@ -67,7 +67,7 @@ const InvoiceInfo: React.FC<Props> = ({ invoice, setInvoice }) => {
                     onChange={(e) => handleInputChange(e , 'invoiceDate')}
                 />
 
-                <h2 className='badge badge-accent'>Date d'échéance</h2>
+                <h2 className='badge badge-primary'>Date d'échéance</h2>
                 <input
                     type="date"
                     value={invoice?.dueDate}
