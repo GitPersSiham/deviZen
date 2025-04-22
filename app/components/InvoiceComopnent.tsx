@@ -1,5 +1,5 @@
 import { Invoice } from '@/type'
-import { CheckCircle, Clock, FileText, SquareArrowOutUpRight, XCircle } from 'lucide-react';
+import { CheckCircle, Clock, FileText, ArrowUpRightSquare, XCircle } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react'
 
@@ -82,7 +82,7 @@ const InvoiceComponent: React.FC<InvoiceComponentProps> = ({ invoice, index }) =
                     className='btn btn-primary btn-sm'
                     href={`/invoice/${invoice.id}`}>
                     Plus
-                    <SquareArrowOutUpRight className='w-4' />
+                    <ArrowUpRightSquare className='w-4' />
                 </Link>
             </div>
 
