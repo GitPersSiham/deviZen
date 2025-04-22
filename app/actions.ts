@@ -57,7 +57,7 @@ export async function createEmptyInvoice(email: string, name: string) {
         const invoiceId = await generateUniqueId() as string
 
         if (user) {
-            const newInvoice = await prisma.invoice.create({
+            return await prisma.invoice.create({
                 data: {
                     id: invoiceId,
                     name: name,
@@ -70,59 +70,53 @@ export async function createEmptyInvoice(email: string, name: string) {
                     dueDate: "",
                     vatActive: false,
                     vatRate: 20,
+                    lines: {
+                        create: []
+                    }
+                },
+                include: {
+                    lines: true
                 }
             })
         }
     } catch (error) {
-        console.error(error)
+        console.error("Erreur lors de la création de la facture:", error)
+        throw error
     }
 }
 
 export async function getInvoicesByEmail(email: string) {
-    if (!email) return;
+    if (!email) {
+        console.log("Email manquant dans getInvoicesByEmail");
+        return [];
+    }
+    
     try {
+        console.log("Recherche de l'utilisateur avec l'email:", email);
         const user = await prisma.user.findUnique({
-            where: {
-                email: email
-            },
+            where: { email },
             include: {
                 invoices: {
                     include: {
-                        lines: true,
+                        lines: true
                     }
                 }
             }
-        })
-        // Statuts possibles :
-        // 1: Brouillon
-        // 2: En attente
-        // 3: Payée
-        // 4: Annulée
-        // 5: Impayé
-        if (user) {
-            const today = new Date()
-            const updatedInvoices = await Promise.all(
-                user.invoices.map(async (invoice) => {
-                    const dueDate = new Date(invoice.dueDate)
-                    if (
-                        dueDate < today &&
-                        invoice.status == 2
-                    ) {
-                        const updatedInvoice = await prisma.invoice.update({
-                            where: { id: invoice.id },
-                            data: { status: 5 },
-                            include: { lines: true }
-                        })
-                        return updatedInvoice
-                    }
-                    return invoice
-                })
-            )
-            return updatedInvoices
-
+        });
+        
+        console.log("Utilisateur trouvé:", user);
+        
+        if (!user) {
+            console.log("Aucun utilisateur trouvé");
+            return [];
         }
+        
+        const invoices = user.invoices;
+        console.log("Factures trouvées:", invoices);
+        return invoices;
     } catch (error) {
-        console.error(error)
+        console.error("Erreur lors de la récupération des factures:", error);
+        throw error;
     }
 }
 

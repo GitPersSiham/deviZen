@@ -13,14 +13,20 @@ export default function Home() {
   const { user } = useUser()
   const [invoiceName, setInvoiceName] = useState("")
   const [isNameValid, setIsNameValid] = useState(true)
-  const email = user?.primaryEmailAddress?.emailAddress as string
+  const email = user?.primaryEmailAddress?.emailAddress
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchInvoices = async () => {
     try {
       setIsLoading(true);
+      console.log("Tentative de récupération des factures pour l'email:", email);
+      if (!email) {
+        console.log("Email non disponible");
+        return;
+      }
       const data = await getInvoicesByEmail(email)
+      console.log("Données reçues:", data);
       if (data) {
         setInvoices(data)
       }
@@ -32,7 +38,10 @@ export default function Home() {
   }
 
   useEffect(() => {
-    fetchInvoices()
+    console.log("Email actuel:", email);
+    if (email) {
+      fetchInvoices();
+    }
   }, [email])
 
   useEffect(() => {
@@ -42,20 +51,22 @@ export default function Home() {
   const handleCreateInvoice = async () => {
     try {
       if (email) {
-        await createEmptyInvoice(email, invoiceName)
+        const newInvoice = await createEmptyInvoice(email, invoiceName)
+        if (newInvoice) {
+          setInvoices(prev => [...prev, newInvoice])
+          setInvoiceName("")
+          const modal = document.getElementById('my_modal_3') as HTMLDialogElement
+          if (modal) {
+            modal.close()
+          }
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+            zIndex: 9999
+          })
+        }
       }
-      fetchInvoices()
-      setInvoiceName("")
-      const modal = document.getElementById('my_modal_3') as HTMLDialogElement
-      if (modal) {
-        modal.close()
-      }
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-        zIndex: 9999
-      })
     } catch (error) {
       console.error("Erreur lors de la création de la facture :", error);
     }
