@@ -1,7 +1,7 @@
 "use client"
-import Image from "next/image";
 import Wrapper from "./components/Wrapper";
-import { Layers, Plus, FileText } from "lucide-react";
+import { Plus } from "lucide-react";
+import { Layers, FileText } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createEmptyInvoice, getInvoicesByEmail } from "./actions";
 import { useUser } from "@clerk/nextjs";

@@ -51,14 +51,14 @@ const InvoiceInfo: React.FC<Props> = ({
           name="issuerName"
           value={invoice.issuerName} 
           onChange={handleInputChange}
-          placeholder="Nom de l'entreprise émitrice"
+          placeholder="Nom de l&apos;entreprise émitrice"
           required
         />  
         <textarea 
           className='textarea textarea-bordered w-full resize-none h-40'
           name="issuerAddress"
           value={invoice.issuerAddress}
-          placeholder="Adresse de l'entreprise émitrice"
+          placeholder="Adresse de l&apos;entreprise émitrice"
           onChange={handleInputChange}
           aria-rowcount={5}
           required

@@ -11,7 +11,7 @@ import { Save, Trash } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
-const page = ({ params }: { params: Promise<{ invoiceId: string }> }) => {
+const Page = ({ params }: { params: Promise<{ invoiceId: string }> }) => {
 
   const [invoice, setInvoice] = useState<Invoice | null>(null);
   const [initialInvoice, setInitialInvoice] = useState<Invoice | null>(null);
@@ -214,5 +214,5 @@ const page = ({ params }: { params: Promise<{ invoiceId: string }> }) => {
   )
 }
 
-export default page
+export default Page
 
