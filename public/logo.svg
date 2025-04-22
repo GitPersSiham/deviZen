@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="192" height="128" viewBox="0 0 192 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="32" cy="64" r="24" fill="#4F46E5" fill-opacity="0.1"/>
+    <path d="M32 48L32 80M24 64L40 64" stroke="#4F46E5" stroke-width="4" stroke-linecap="round"/>
+    <text x="64" y="80" font-family="Arial" font-size="32" font-weight="bold" fill="#4F46E5">Devis</text>
+    <text x="140" y="80" font-family="Arial" font-size="32" font-weight="bold" fill="#E5E7EB">Zen</text>
+</svg> 
