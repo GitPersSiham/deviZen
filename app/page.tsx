@@ -2,7 +2,7 @@
 
 import Wrapper from "./components/Wrapper";
 import { Layers } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createEmptyInvoice, getInvoicesByEmail } from "./actions";
 import { useUser } from "@clerk/nextjs";
 import confetti from "canvas-confetti"
@@ -19,7 +19,7 @@ export default function Home() {
   const email = user?.primaryEmailAddress?.emailAddress as string
   const [invoices, setInvoices] = useState<Invoice[]>([]);
 
-  const fetchInvoices = async () => {
+  const fetchInvoices = useCallback(async () => {
     try {
       const data = await getInvoicesByEmail(email)
       if (data) {
@@ -28,7 +28,7 @@ export default function Home() {
     } catch (error) {
       console.error("Erreur lors du chargement des factures", error);
     }
-  }
+  }, [email])
 
   useEffect(() => {
     fetchInvoices()
